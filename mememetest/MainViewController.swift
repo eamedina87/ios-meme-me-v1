@@ -22,12 +22,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate
     
     var isImageSelected: Bool = false
     var originalImage: UIImage? = nil
+    var memedImage: UIImage? = nil
     
     let memeTextAttributes:[String: Any] = [
         NSAttributedStringKey.strokeColor.rawValue: UIColor.black,
         NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
         NSAttributedStringKey.font.rawValue: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedStringKey.strokeWidth.rawValue: 2.0]
+        NSAttributedStringKey.strokeWidth.rawValue: -3.0]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -42,6 +43,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate
         if (!isImageSelected){
             setUIElements(false)
         }
+        subscribeToKeyboardNotifications()
     }
     
     
@@ -50,6 +52,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate
         // Do any additional setup after loading the view, typically from a nib.
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
+    
     //MARK: Private Methods
     
     @IBAction func pickImage(_ sender: Any) {
@@ -81,13 +88,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate
         topText.resignFirstResponder()
         bottomText.resignFirstResponder()
         
-        let memedImage = getMemedImage()
+        memedImage = getMemedImage()
         
-        /*
-        let newMeme = Meme(topText: topTextMessage!, bottomText: bottomTextMessage!, originalImage: originalImage!, memedImage: memedImage)
-        */
+        
         let activityController = UIActivityViewController(activityItems: [memedImage], applicationActivities: [])
-        present(activityController,animated: true, completion: nil)
+        present(activityController,animated: true){
+            self.saveMeme()
+        }
+        
     }
     
     @IBAction func cancelMeme(_ sender: Any) {
@@ -95,6 +103,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate
         setUIElements(false)
     }
     
+    func saveMeme(){
+    
+         let newMeme = Meme(topText: topText.text!, bottomText: bottomText.text!, originalImage: originalImage!, memedImage: memedImage!)
+ 
+    }
 
     func getMemedImage() -> UIImage{
         //UIGraphicsBeginImageContext(self.view.frame.size)
@@ -131,6 +144,33 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate
     func setCancelButtonEnabled(_ enabled:Bool){
         cancelButton.isEnabled = enabled
     }
+    
+    func subscribeToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+
+    
+    @objc func keyboardWillShow(_ notification:Notification) {
+        view.frame.origin.y -= getKeyboardHeight(notification)
+    }
+    
+    @objc func keyboardWillHide(_ notification:Notification) {
+        view.frame.origin.y = 0
+    }
+    
+    func getKeyboardHeight(_ notification:Notification) -> CGFloat {
+        
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
     
     func showAlert(message:String){
         let alertController = UIAlertController()

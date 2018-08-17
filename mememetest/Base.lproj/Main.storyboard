@@ -46,7 +46,7 @@
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="TOP" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cJt-fL-6y1">
                                 <rect key="frame" x="16" y="69" width="343" height="17"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -70,7 +70,7 @@
                             </navigationBar>
                             <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Aya-lv-P39">
                                 <rect key="frame" x="16" y="594" width="343" height="17"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -99,9 +99,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="bottomBar" destination="ocN-ns-igM" id="nbA-6U-etr"/>
                         <outlet property="bottomText" destination="Aya-lv-P39" id="4u0-2v-63d"/>
                         <outlet property="cameraButton" destination="xL6-az-er3" id="YJl-nl-lzh"/>
+                        <outlet property="cancelButton" destination="Uzj-VH-C8b" id="y7F-o8-vhb"/>
                         <outlet property="imageView" destination="DVm-yw-sos" id="whj-Vq-xOs"/>
+                        <outlet property="navigationBar" destination="aMd-I5-tvq" id="AkF-9S-VUy"/>
+                        <outlet property="shareButton" destination="UVw-MZ-17E" id="DeK-XJ-x8r"/>
                         <outlet property="topText" destination="cJt-fL-6y1" id="H0t-pL-Svc"/>
                     </connections>
                 </viewController>
